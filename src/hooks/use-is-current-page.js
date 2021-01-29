@@ -1,4 +1,4 @@
-const isAbsolutePath = path => !path?.startsWith(`/`);
+import {URLFactory as URL, isAbsolutePath} from "./dependencies/URL"
 
 const addSlashToEnd = (string) => {
     if(string.slice(-1) !== "/")
@@ -12,8 +12,10 @@ export default function useIsCurrentPage(path, gatsbyLocation){
 
     if(isAbsolutePath(path))
     {
-        let url = new URL(path);
+        let url = URL(path);
         path = url.pathname;
+        if(gatsbyLocation.hostname !== url.hostname)
+            return false
     }
 
     return addSlashToEnd(gatsbyLocation.pathname) === addSlashToEnd(path);
