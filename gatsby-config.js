@@ -113,20 +113,19 @@ module.exports = themeOptions => {
                             path: { regex: "/^(?!/404/|/404.html|/dev-404-page/)/" }
                           }
                         ) {
-                          edges {
-                            node {
-                              path
-                            }
+                          nodes { 
+                            path 
                           }
                         }
                       }
                     `,
                     output: '/sitemap.xml',
-                    serialize: ({ site, allSitePage }) => allSitePage.edges.map((edge) => ({
-                        url: site.siteMetadata.siteUrl + edge.node.path,
-                        changefreq: 'monthly',
-                        priority: 0.7
-                    }))
+                    serialize: ({ path, modifiedGmt }) => {
+                        return {
+                            url: path,
+                            lastmod: modifiedGmt,
+                        }
+                    }
                 }
             },
             {
