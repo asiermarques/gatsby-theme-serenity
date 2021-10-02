@@ -18,7 +18,6 @@ exports.createPages = async ({ graphql, actions }) => {
                     frontmatter {
                       template
                       slug
-                      coverImage
                     }
                 }
             }
@@ -79,10 +78,6 @@ exports.createSchemaCustomization = ({ actions }) => {
         slug: String!
         coverImage: String
         coverImageCaption: String
-    }
-
-    type MarkdownRemark implements Node {
-      frontmatter: MarkdownRemarkFrontmatter
     }
   `
     createTypes(typeDefs)
@@ -304,7 +299,6 @@ Duplicated footnote reference[^second].
 slug: /about-me/
 title: About
 template: page
-coverImage: ""
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eu lorem eget metus venenatis dignissim. Vivamus lobortis, mauris eu facilisis sodales, nisl metus ultrices orci, non finibus quam nulla ac est. Fusce egestas faucibus lorem quis varius. Morbi id faucibus tellus, sit amet venenatis metus. Vivamus diam odio, mollis ac varius ut, imperdiet ut nunc. Sed sagittis nulla et tempus egestas. Donec sit amet molestie turpis. Maecenas purus ante, rutrum id erat eu, rutrum ultrices ligula.

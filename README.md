@@ -71,7 +71,7 @@ module.exports = {
                },
                {
                    title: "About me",
-                   href: "/info/about-me"
+                   href: "/about-me"
                },
            ],
            articles_per_page: 4,
