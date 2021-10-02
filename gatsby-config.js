@@ -185,6 +185,18 @@ module.exports = themeOptions => {
                     ],
                 },
             },
+            {
+                resolve: `gatsby-plugin-sharp`,
+                options: {
+                    defaults: {},
+                    failOnError: false,
+                    base64Width: 20,
+                    forceBase64Format: `jpg`,
+                    useMozJpeg: process.env.GATSBY_JPEG_ENCODER === `MOZJPEG`,
+                    stripMetadata: true,
+                    defaultQuality: 70,
+                },
+            },
         ],
     }
 }

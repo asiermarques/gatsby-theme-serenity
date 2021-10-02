@@ -1,5 +1,43 @@
 const fs = require("fs");
 const path = require('path');
+const sharp = require(`sharp`);
+const glob = require(`glob`);
+
+const optimizeImages = async () => {
+    const matches = glob.sync(`public/**/*.{png,jpg,jpeg}`);
+    const MAX_WIDTH = 1800;
+    const QUALITY = 70;
+    const PREFIX = `-optimized`;
+    await Promise.all(
+        matches.map(async match => {
+            try{
+                const stream = await sharp(match);
+                const info = await stream.metadata();
+
+                if (info.width <= MAX_WIDTH || match.search(`${PREFIX}.`) !== -1)
+                    return;
+
+                const optimizedName = match.replace(
+                    /(\..+)$/,
+                    (name, ext) => `${PREFIX}${ext}`
+                );
+                await stream
+                    .resize(MAX_WIDTH)
+                    .jpeg({ quality: QUALITY })
+                    .toFile(optimizedName);
+                return fs.rename(optimizedName, match, err => {
+                    if(err)
+                        console.log(`${match} with err: ${err}`);
+                    console.log(`${match} image optimized`);
+                });
+            }catch (e) {
+                console.log(`${match} was not optimized because the error: ${e}`);
+            }
+        })
+    );
+};
+
+exports.onPostBuild = optimizeImages;
 
 exports.createPages = async ({ graphql, actions }) => {
     const { createPage } = actions;
@@ -145,7 +183,6 @@ function copyStaticAssets(staticsPath, reporter){
         }
     })
 }
-
 
 function createDefaultContent(contentDirectory) {
 
